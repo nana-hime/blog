@@ -8,12 +8,24 @@ class PostsController < ApplicationController
 
 	def create
 		@post = Post.new(params[:post])
-		@post.save
-		redirect_to @post
+		if @post.save
+			redirect_to @post
+		else
+			render 'new'
+		end
 	end
 
 	def show
 		@post = Post.find(params[:id])
+	end
+
+	def edit
+		@post = Post.find(params[:id])
+		if @post.update(params[:post].permit(:title, :text))
+			redirect_to @post
+		else
+			render 'edit'
+		end
 	end
 
 	private
